@@ -1,0 +1,79 @@
+body {
+  font-family: sans-serif;
+  background: #f2f2f2;
+}
+
+.post {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px auto;
+  width: 300px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post img {
+  width: 100%;
+  border-radius: 10px;
+}
+.link-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+    align-items: center;
+    margin: 8px 0;
+}
+
+.header-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px;
+    max-width: 980px;
+    margin: 14px auto;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.facebook-logo{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.facebook-logo img{
+    width: 36px;
+    height: 36px;
+}
+.facebook-logo h1{
+    color: #1877f2;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.profile{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.profile-pic{
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.name strong{ display: block; }
+.meta{ color: #666; font-size: 0.9rem; }
+
+.edit-profile{
+    background-color: #1877f2;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+    cursor: pointer;
+}
