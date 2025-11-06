@@ -19,9 +19,12 @@ body {
 .link-container {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 30px;
     align-items: center;
     margin: 8px 0;
+
+  
 }
 
 .header-container{
@@ -76,4 +79,26 @@ body {
     border-radius: 6px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.12);
     cursor: pointer;
+}
+.parent{
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+grid-template-rows: repeat(5, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+.overview { 
+  grid-area: 2 / 1 / 6 / 3;
+  background-color: rgb(89, 150, 204);
+  padding: fill;
+  padding-top: 100% ;
+ }
+.overview-content { 
+    grid-area: 2 / 3 / 6 / 6;
+    background-color: antiquewhite;
+    padding-bottom: 100%;
+    padding: fill; 
+
+
 }
