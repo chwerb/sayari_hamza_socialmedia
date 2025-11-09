@@ -1,0 +1,113 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "GIGA HAMZA",
+      "profile_photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGEXkM0HapIuZdCFmCWOMjgJgeYYRMpq39GdkUaitdsTODKJuoW9_2qoC4U5Hf4dWj7ao&usqp=CAU"
+    },
+    {
+      "id": 2,
+      "name": "Karim Haddad",
+      "profile_photo": "https://i.pinimg.com/736x/3a/9c/08/3a9c082f20f3c0e2e6bb152e9db65b58.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Lina Mansour",
+      "profile_photo": "https://media.licdn.com/dms/image/v2/D4E03AQE-qsouJ3XRVQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1728031694344?e=2147483647&v=beta&t=WgpoBDuF7a_atbvpSl6h9gD3nrYPR5mAt5S6KqgMZME"
+    },
+    {
+      "id": 4,
+      "name": "Omar Gharbi",
+      "profile_photo": "https://images.unsplash.com/photo-1586232902955-df204f34b36e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxhY2slMjBtYW4lMjBzdWl0fGVufDB8fDB8fHww&fm=jpg&q=60&w=3000"
+    },
+    {
+      "id": 5,
+      "name": "Sara Trabelsi",
+      "profile_photo": "https://www.memepfp.com/_next/image/?url=https%3A%2F%2Fcdn.memepfp.com%2Fcute-anime-girl-pfp&w=1080&q=75"
+    }
+  ],
+
+  "posts": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "content": "Had a great day at the beach!",
+      "photo": "https://media.tenor.com/uTPw3Eh8qJoAAAAe/prosper-fitness-black-male-walking-black-guy-buff.png",
+      "likes": 34,
+      "comments": [
+        {
+          "user_id": 2,
+          "text": "Looks amazing!"
+        },
+        {
+          "user_id": 3,
+          "text": "I wish I was there!"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "content": "Just finished a new painting 🎨",
+      "photo": "https://easy-peasy.ai/cdn-cgi/image/quality=95,format=auto,width=800/https://media.easy-peasy.ai/9aa9cc6c-4d60-4c9e-99d4-631f4899cc86/8dfb03d2-caa1-4fe0-9bc8-1b39afec58d8.png",
+      "likes": 57,
+      "comments": [
+        {
+          "user_id":2 ,
+          "text": "Beautiful colors!"
+        }
+      ]
+    },
+{
+      "id": 3,
+      "user_id": 1,
+      "content": "Studying late again… coffee is my best friend ☕",
+      "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjQjkmWrKm-S1K0UiCO9_wi1pPNgNCB8SPKw&s",
+      "likes": 19,
+      "comments": [
+        {
+          "user_id": 2,
+          "text": "Good luck!"
+        },
+        {
+          "user_id": 4,
+          "text": "Don t forget to sleep 😅"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "content": "Sunset view from the rooftop 🌇",
+      "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWeplxSLDMeFHHtgUG255lm54gw23C-pmkxA&s",
+      "likes": 88,
+      "comments": [
+        {
+          "user_id": 1,
+          "text": "Wow, this looks perfect!"
+        },
+        {
+          "user_id": 5,
+          "text": "That lighting is insane!"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "content": "Homemade pasta night 🍝",
+      "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA_R5Plnvd9C9eL1KGM8KKPDFxYfwndScVMA&s",
+      "likes": 42,
+      "comments": [
+        {
+          "user_id": 3,
+          "text": "That looks delicious!"
+        },
+        {
+          "user_id": 2,
+          "text": "Save me a plate next time 😋"
+        }
+      ]
+    }
+  ]
+}

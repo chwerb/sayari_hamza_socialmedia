@@ -23,3 +23,44 @@ function placelived(){
     document.querySelector(".overview-content").innerHTML="<h2>Place Lived</h2><p>This is the place lived section.</p>";
 }
 
+
+
+fetch('data.JSON')
+  .then(response => response.json())
+  .then(data => {
+    const postsContainer = document.getElementById('posts-container');
+
+    data.posts.forEach(post => {
+      const user = data.users.find(u => u.id === post.user_id);
+      if (!user) return; 
+
+      const postElement = document.createElement('div');
+      postElement.className = 'post';
+
+      const photoHtml = `<img src="${post.photo}" alt="Post Image">` ;
+      const profilePhotoHtml =  `<img src="${user.profile_photo}" alt="${user.name} s Profile Photo" class="profile-pic">` ;
+      postElement.innerHTML = `
+        ${profilePhotoHtml}
+        <h3>${user.name}</h3>
+        <p>${post.content}</p>
+        ${photoHtml}
+        <p>Likes: ${post.likes}</p>
+        <div class="comments"></div>
+      `;
+
+      const commentsContainer = postElement.querySelector('.comments');
+      post.comments.forEach(comment => {
+        const commentUser = data.users.find(u => u.id === comment.user_id);
+        if (!commentUser) return;
+        const profilePhotoHtmlcomment = `<img src="${commentUser.profile_photo}" alt="${commentUser.name}'s Profile Photo" class="profile-pic">` ;
+
+        const commentElement = document.createElement('div');
+        commentElement.className = 'comment';
+        commentElement.innerHTML =`${profilePhotoHtmlcomment}<strong>${commentUser.name}:</strong> ${comment.text}`;
+        commentsContainer.appendChild(commentElement);
+      });
+      postsContainer.appendChild(postElement);
+    });
+  })
+  .catch(error => console.error('Error loading data:', error));
+
