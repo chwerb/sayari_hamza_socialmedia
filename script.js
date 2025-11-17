@@ -40,9 +40,11 @@ fetch('data.JSON')
       const photoHtml = `<img src="${post.photo}" alt="Post Image">` ;
       const profilePhotoHtml =  `<img src="${user.profile_photo}" alt="${user.name} s Profile Photo" class="profile-pic">` ;
       postElement.innerHTML = `
-        ${profilePhotoHtml}
+        <div class=profile-post>${profilePhotoHtml}
         <h3>${user.name}</h3>
+        </div>
         <p>${post.content}</p>
+        </div>
         ${photoHtml}
         <p>Likes: ${post.likes}</p>
         <div class="comments"></div>
@@ -60,6 +62,14 @@ fetch('data.JSON')
         commentsContainer.appendChild(commentElement);
       });
       postsContainer.appendChild(postElement);
+    });
+    const friendscontainer=document.getElementById('friends');
+    data.users.forEach(friend => {
+      const friendprofilephoto=`<img src="${friend.profile_photo}" alt="${friend.name}photo" class="profile-pic">`;
+      const friendelement = document.createElement('div');
+      friendelement.className = 'friend';
+      friendelement.innerHTML =`${friendprofilephoto}<h3>${friend.name}</h3>`;
+      friendscontainer.appendChild(friendelement);
     });
   })
   .catch(error => console.error('Error loading data:', error));
