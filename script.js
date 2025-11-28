@@ -1,106 +1,114 @@
-function showposts(){
-    document.getElementById("posts-container").style.display="block";
-    document.getElementById("about").style.display="none";
-    document.getElementById("friends").style.display="none";
-}
-function showabout(){
-    document.getElementById("posts-container").style.display="none";
-    document.getElementById("about").style.display="block";
-    document.getElementById("friends").style.display="none";
-}
-function showfriends(){
-    document.getElementById("posts-container").style.display="none";
-    document.getElementById("about").style.display="none";
-    document.getElementById("friends").style.display="block";
-}
-function showoverview(){
-    document.querySelector(".overview-content").innerHTML="<h2>Overview</h2><p>Easy-going, curious, and open to good conversations. Here to share moments and connect with people who bring positive vibes.</p>";
-}
-function showwork(){
-    document.querySelector(".overview-content").innerHTML=`<h2>Work and Education</h2>
-    <p>Strong foundation in mathematics, physics, and computer science
-    Actively studying programming languages (C, C++, Web)
-    Working on projects to build real experience  </p>`;
-}
-function placelived(){
-    document.querySelector(".overview-content").innerHTML=`<h2>Place Lived</h2><p>Current City
-                                              Tunis, Tunisia (or the city where you currently study/live)
-                                               Hometown
-                                              Ariana, Tunisia (if that’s where you grew up)</p>`;
+function showposts() {
+    document.getElementById("posts-container").style.display = "block";
+    document.getElementById("about").style.display = "none";
+    document.getElementById("friends").style.display = "none";
 }
 
-function runNotifPanel() {
-  const list = document.getElementById('notif-list');
-  if(!list) return;
-  list.innerHTML = '';
-  notifications.forEach(n => {
-    const li = document.createElement('li');
-    li.innerText = n.message;
-    li.style.fontWeight = n.read ? 'normal' : 'bold';
-    li.onclick = () => {
-      n.read = true;
-      // use render* helpers (defined later)
-      if (typeof renderNotifCount === 'function') renderNotifCount();
-      if (typeof renderNotifPanel === 'function') renderNotifPanel();
-    };
-    list.appendChild(li);
-  });
+function showabout() {
+    document.getElementById("posts-container").style.display = "none";
+    document.getElementById("about").style.display = "block";
+    document.getElementById("friends").style.display = "none";
 }
 
-// ensure notif panel hidden initially (avoid overriding later click handler)
-const __notifPanelInit = document.getElementById('notif-panel');
-if(__notifPanelInit) __notifPanelInit.style.display = 'none';
+function showfriends() {
+    document.getElementById("posts-container").style.display = "none";
+    document.getElementById("about").style.display = "none";
+    document.getElementById("friends").style.display = "block";
+}
 
+function showoverview() {
+    document.querySelector(".overview-content").innerHTML = "<h2>Overview</h2><p>Easy-going, curious, and open to good conversations. Here to share moments and connect with people who bring positive vibes.</p>";
+}
 
+function showwork() {
+    document.querySelector(".overview-content").innerHTML = `<h2>Work and Education</h2>
+    <p>Strong foundation in mathematics, physics, and computer science<br>
+    Actively studying programming languages (C, C++, Web)<br>
+    Working on projects to build real experience</p>`;
+}
 
-fetch('data.JSON')
-  .then(response => response.json())
-  .then(data => {
-    const postsContainer = document.getElementById('posts-container');
+function placelived() {
+    document.querySelector(".overview-content").innerHTML = `<h2>Places Lived</h2>
+    <p><strong>Current City:</strong> Tunis, Tunisia<br>
+    <strong>Hometown:</strong> Ariana, Tunisia</p>`;
+}
 
-    if (Array.isArray(data.posts) && postsContainer) {
-      data.posts.forEach(post => {
-        const user = (data.users || []).find(u => u.id === post.user_id) || null;
+// ================ NOTIFICATIONS ================
+let notifications = [];
 
-        const postElement = document.createElement('div');
-        postElement.className = 'post';
+function renderNotifCount() {
+    const count = notifications.filter(n => !n.read).length;
+    document.getElementById('notif-count').innerText = count || '';
+}
 
-        const photoHtml = post.photo ? `<img src="${post.photo}" alt="Post Image">` : '';
-        const profilePhotoHtml = user ? `<img src="${user.profile_photo}" alt="${user.name} s Profile Photo" class="profile-pic">` : '';
+function renderNotifPanel() {
+    const list = document.getElementById('notif-list');
+    list.innerHTML = '';
+    notifications.forEach(n => {
+        const li = document.createElement('li');
+        li.innerText = n.message;
+        li.style.fontWeight = n.read ? 'normal' : 'bold';
+        li.onclick = () => {
+            n.read = true;
+            renderNotifCount();
+            renderNotifPanel();
+        };
+        list.appendChild(li);
+    });
+}
 
-        postElement.innerHTML = `
-        <div class="profile-post">${profilePhotoHtml}
-        <h3>${user ? user.name : 'Unknown'}</h3>
-        </div>
-        <p>${post.content || ''}</p>
-        <div class="post-image">
-        ${photoHtml}
-        </div>
-        <div class="post-interactions">
-          <button id="button-likes">Likes: ${post.likes || 0}</button>
-          <button id="button-comment">comments</button>
-        </div>
-        <div class="comments" style="display:none;"></div>
-      `;
+// Bell icon 
+document.getElementById('bell-icon').onclick = () => {
+    document.getElementById('notif-panel').classList.toggle('hidden');
+};
 
-        const commentsContainer = postElement.querySelector('.comments');
-        if (Array.isArray(post.comments) && commentsContainer) {
-          post.comments.forEach(comment => {
-            const commentUser = (data.users || []).find(u => u.id === comment.user_id);
-            if (!commentUser) return;
-            const profilePhotoHtmlcomment = `<img src="${commentUser.profile_photo}" alt="${commentUser.name}'s Profile Photo" class="profile-pic">`;
+// ================ FETCH POSTS & FRIENDS  ================
+fetch('data.JSON')  
+    .then(response => response.json())
+    .then(data => {
+        const postsContainer = document.getElementById('posts-container');
 
-            const commentElement = document.createElement('div');
-            commentElement.className = 'comment';
-            commentElement.innerHTML = `${profilePhotoHtmlcomment}<strong>${commentUser.name}:</strong> ${comment.text}`;
-            commentsContainer.appendChild(commentElement);
-          });
-        }
+        // POSTS
+        data.posts.forEach(post => {
+            const user = data.users.find(u => u.id === post.user_id);
+            if (!user) return;
 
-        postsContainer.appendChild(postElement);
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
 
-        const likesButton = postElement.querySelector('#button-likes');
-        
+            const photoHtml = post.photo ? `<img src="${post.photo}" alt="Post Image" class="post-image">` : '';
+            const profilePhotoHtml = `<img src="${user.profile_photo}" alt="${user.name}" class="profile-pic">`;
+
+            postElement.innerHTML = `
+                <div class="profile-post">
+                    ${profilePhotoHtml}
+                    <h3>${user.name}</h3>
+                </div>
+                <p class="post-content">${post.content}</p>
+                ${photoHtml}
+                <div class="post-interactions">
+                    <button class="button-likes">Likes: ${post.likes}</button>
+                    <button class="button-comment">Comments</button>
+                </div>
+                <div class="comments" style="display:none;"></div>
+            `;
+
+            // Comments
+            const commentsContainer = postElement.querySelector('.comments');
+            post.comments.forEach(comment => {
+                const commentUser = data.users.find(u => u.id === comment.user_id);
+                if (!commentUser) return;
+                const commentPhoto = `<img src="${commentUser.profile_photo}" alt="${commentUser.name}" class="profile-pic comment-pic">`;
+                const commentEl = document.createElement('div');
+                commentEl.className = 'comment';
+                commentEl.innerHTML = `${commentPhoto}<strong>${commentUser.name}:</strong> ${comment.text}`;
+                commentsContainer.appendChild(commentEl);
+            });
+
+            postsContainer.appendChild(postElement);
+
+            // Likes button
+            const likesButton = postElement.querySelector('.button-likes');
         if (likesButton) {
           let x=0 ;
            likesButton.addEventListener('click', () => {
@@ -116,67 +124,36 @@ fetch('data.JSON')
             likesButton.style.background="#e7f3ff";
             x=x+1;
             }
-          });
-         
-        }
-        const commentButton = postElement.querySelector('#button-comment');
-        if (commentButton && commentsContainer) {
-          commentButton.addEventListener('click', () => {
-            commentsContainer.style.display = (commentsContainer.style.display === 'none') ? 'block' : 'none';
-          });
-        }
-      });
-    }
+           });
+        }   
 
-    const friendscontainer = document.getElementById('friends');
-    if (Array.isArray(data.users) && friendscontainer) {
-      data.users.forEach(friend => {
-        const friendprofilephoto = `<img src="${friend.profile_photo}" alt="${friend.name}photo" class="profile-pic">`;
-        const friendelement = document.createElement('div');
-        friendelement.className = 'friend';
-        friendelement.innerHTML = `${friendprofilephoto}<h3>${friend.name}</h3>`;
-        friendscontainer.appendChild(friendelement);
-      });
-    }
-  })
-  .catch(error => console.error('Error loading data:', error));
+            // comments
+            const commentButton = postElement.querySelector('.button-comment');
+            commentButton.addEventListener('click', () => {
+                const display = commentsContainer.style.display === 'none' || commentsContainer.style.display === '' ? 'block' : 'none';
+                commentsContainer.style.display = display;
+            });
+        });
 
- let notifications = []; 
+        // FRIENDS (only once!)
+        const friendsContainer = document.getElementById('friends');
+        friendsContainer.innerHTML = ''; // clear duplicate
+        data.users.forEach(friend => {
+            const friendPhoto = `<img src="${friend.profile_photo}" alt="${friend.name}" class="profile-pic">`;
+            const friendEl = document.createElement('div');
+            friendEl.className = 'friend';
+            friendEl.innerHTML = `${friendPhoto}<h3>${friend.name}</h3>`;
+            friendsContainer.appendChild(friendEl);
+        });
+    })
+    .catch(error => console.error('Error loading data:', error));
 
-
+// Load notifications
 fetch('data.JSON')
-  .then(response => response.json())
-  .then(data => {
-    notifications = data.notifications;
-    renderNotifCount();
-    renderNotifPanel();
-  })
-  .catch(error => console.error("Error loading notifications:", error));
-
-function renderNotifCount() {
-  const count = notifications.filter(n => !n.read).length;
-  const el = document.getElementById('notif-count');
-  if(el) el.innerText = count;
-}
-
-function renderNotifPanel() {
-  const list = document.getElementById('notif-list');
-  if(!list) return;
-  list.innerHTML = '';
-  notifications.forEach(n => {
-    const li = document.createElement('li');
-    li.innerText = n.message;
-    li.style.fontWeight = n.read ? 'normal' : 'bold';
-    li.onclick = () => {
-      n.read = true;
-      renderNotifCount();
-      renderNotifPanel();
-    };
-    list.appendChild(li);
-  });
-}
-
-document.getElementById('bell-icon').onclick = () => {
-  const panel = document.getElementById('notif-panel');
-  if(panel) panel.classList.toggle('hidden');
-};
+    .then(response => response.json())
+    .then(data => {
+        notifications = data.notifications || [];
+        renderNotifCount();
+        renderNotifPanel();
+    })
+    .catch(err => console.error("Error loading notifications:", err));
