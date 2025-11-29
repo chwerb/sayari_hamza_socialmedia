@@ -2,18 +2,21 @@ function showposts() {
     document.getElementById("posts-container").style.display = "block";
     document.getElementById("about").style.display = "none";
     document.getElementById("friends").style.display = "none";
+    document.getElementById("friends-search-container").style.display = "none";
 }
 
 function showabout() {
     document.getElementById("posts-container").style.display = "none";
     document.getElementById("about").style.display = "block";
     document.getElementById("friends").style.display = "none";
+    document.getElementById("friends-search-container").style.display = "none";
 }
 
 function showfriends() {
     document.getElementById("posts-container").style.display = "none";
     document.getElementById("about").style.display = "none";
     document.getElementById("friends").style.display = "block";
+    document.getElementById("friends-search-container").style.display = "block";
 }
 
 function showoverview() {
@@ -52,8 +55,11 @@ function renderNotifPanel() {
             n.read = true;
             renderNotifCount();
             renderNotifPanel();
+            const postEl = document.getElementById(`post-${n.id}`);
+            if(postEl) postEl.scrollIntoView({ behavior: "smooth" });
         };
         list.appendChild(li);
+        
     });
 }
 
@@ -79,7 +85,7 @@ fetch('data.JSON')
             const photoHtml = post.photo ? `<img src="${post.photo}" alt="Post Image" class="post-image">` : '';
             const profilePhotoHtml = `<img src="${user.profile_photo}" alt="${user.name}" class="profile-pic">`;
 
-            postElement.innerHTML = `
+            postElement.innerHTML = `<div id="post-${post.id}" class="post-${post.id}">
                 <div class="profile-post">
                     ${profilePhotoHtml}
                     <h3>${user.name}</h3>
@@ -91,7 +97,7 @@ fetch('data.JSON')
                     <button class="button-comment">Comments</button>
                 </div>
                 <div class="comments" style="display:none;"></div>
-            `;
+            </div>`;
 
             // Comments
             const commentsContainer = postElement.querySelector('.comments');
@@ -135,9 +141,9 @@ fetch('data.JSON')
             });
         });
 
-        // FRIENDS (only once!)
+        // FRIENDS 
         const friendsContainer = document.getElementById('friends');
-        friendsContainer.innerHTML = ''; // clear duplicate
+        friendsContainer.innerHTML = ''; 
         data.users.forEach(friend => {
             const friendPhoto = `<img src="${friend.profile_photo}" alt="${friend.name}" class="profile-pic">`;
             const friendEl = document.createElement('div');
@@ -157,3 +163,92 @@ fetch('data.JSON')
         renderNotifPanel();
     })
     .catch(err => console.error("Error loading notifications:", err));
+document.getElementById("edit-btn").addEventListener("click", () => {
+document.getElementById("edit-section").style.display = "block";
+});
+
+document.getElementById("save-btn").addEventListener("click", () => {
+    const newName = document.getElementById("new-name").value.trim();
+
+    if (newName === "") return alert("Name cannot be empty");
+    document.getElementById("profile-na").textContent = newName;
+    document.getElementById("edit-section").style.display="none";
+})
+
+// Friends Search
+document.getElementById('friends-search').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const friends = document.querySelectorAll('#friends .friend');
+    friends.forEach(friend => {
+        const name = friend.querySelector('h3').textContent.toLowerCase();
+        friend.style.display = name.includes(query) ? 'flex' : 'none';
+    });
+})
+// CREATE POST FUNCTIONALITY
+document.getElementById('post-submit-btn')?.addEventListener('click', () => {
+    const textEl = document.getElementById('new-post-text');
+    const text = textEl ? textEl.value.trim() : '';
+    if (!text) return alert("Please write something first!");
+
+    const postsContainer = document.getElementById('posts-container');
+    if (!postsContainer) return console.error('No posts container found');
+
+    const postElement = document.createElement('div');
+    postElement.className = 'post';
+
+    const postId = Date.now(); 
+
+    const authorName = document.getElementById('profile-na')?.textContent.trim() || 'You';
+
+    postElement.id = `post-${postId}`;
+
+    postElement.innerHTML = `
+        <div class="post-content-wrapper">
+            <div class="profile-post">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGEXkM0HapIuZdCFmCWOMjgJgeYYRMpq39GdkUaitdsTODKJuoW9_2qoC4U5Hf4dWj7ao&usqp=CAU" class="profile-pic">
+                <h3>${authorName}</h3>
+            </div>
+            <p class="post-content">${text.replace(/\n/g, '<br>')}</p>
+            <div class="post-interactions">
+                <button class="button-likes">Like</button>
+                <button class="button-comment">Comment</button>
+            </div>
+            <div class="comments" style="display:none;"></div>
+        </div>
+    `;
+
+    postsContainer.insertBefore(postElement, postsContainer.firstChild);
+
+    if (textEl) textEl.value = '';
+
+    const likeBtn = postElement.querySelector('.button-likes');
+    let liked = false;
+    let likesCount = 0;
+
+    if (likeBtn) {
+        likeBtn.addEventListener('click', () => {
+            if (!liked) {
+                likesCount++;
+                likeBtn.textContent = likesCount === 1 ? "You liked this" : `You and ${likesCount} others`;
+                likeBtn.style.background = "#1877f2";
+                likeBtn.style.color = "white";
+            } else {
+                likesCount--;
+                likeBtn.textContent = likesCount === 0 ? "Like" : `Like · ${likesCount}`;
+                likeBtn.style.background = "#e7f3ff";
+                likeBtn.style.color = "#1877f2";
+            }
+            liked = !liked;
+        });
+    }
+
+    // Comment toggle
+    const commentBtn = postElement.querySelector('.button-comment');
+    if (commentBtn) {
+        commentBtn.addEventListener('click', () => {
+            const comments = postElement.querySelector('.comments');
+            if (!comments) return;
+            comments.style.display = comments.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+});

@@ -29,13 +29,17 @@
                 <div class="profile">
                     <img class="profile-pic" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGEXkM0HapIuZdCFmCWOMjgJgeYYRMpq39GdkUaitdsTODKJuoW9_2qoC4U5Hf4dWj7ao&usqp=CAU" alt="profile picture">
                     <div class="name">
-                        <strong>hamza sayari</strong>
+                        <strong id="profile-na">hamza sayari</strong>
                         <div class="meta">followers: 9999M · following: 1</div>
                     </div>
                 </div>
 
             <div class="header-right">
-                <button class="edit-profile">Edit profile</button>
+                <button class="edit-profile" id="edit-btn">Edit profile</button>
+                 <div id="edit-section" style="display:none;">
+                <input type="text" id="new-name" placeholder="Enter new name">
+                <button id="save-btn">Save</button>
+                </div>
             </div>
             </div>
         </header>
@@ -47,6 +51,16 @@
     </div>
 
     <hr>
+    <div class="create-post-box" style="max-width: 700px; margin: 20px auto; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+    <textarea id="new-post-text" placeholder="What's on your mind, Hamza?" style="width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; resize: none; font-family: inherit;"></textarea>
+    <div style="margin-top: 10px; text-align: right;">
+        <button id="post-submit-btn" style="background: #1877f2; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Post</button>
+    </div>
+    </div>
+    <!-- SEARCH BAR FOR FRIENDS -->
+    <div id="friends-search-container" style="display: none; max-width: 700px; margin: 20px auto;">
+    <input type="text" id="friends-search" placeholder="Search friends..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
+    </div>
     <div id="posts-container" class="posts">
         <!-- Posts will be dynamically added here -->
         </div>
